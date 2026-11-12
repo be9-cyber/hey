@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChemStudy Hub - 전공 & 루틴 올인원 스튜디오</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-input: #0f172a;
+      --border-color: #334155;
+      --accent-color: #38bdf8;
+      --accent-hover: #0284c7;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --danger: #f43f5e;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --purple: #a855f7;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f1f5f9;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-input: #f8fafc;
+      --border-color: #cbd5e1;
+      --accent-color: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-glow: rgba(2, 132, 199, 0.15);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .day-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-color);
+      color: #0f172a;
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      color: #ffffff;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      border-color: var(--border-color);
+      color: var(--text-primary);
+    }
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+
+    .btn-danger {
+      background: rgba(244, 63, 94, 0.15);
+      border-color: rgba(244, 63, 94, 0.4);
+      color: var(--danger);
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-sm {
+      padding: 0.3rem 0.65rem;
+      font-size: 0.775rem;
+    }
+
+    /* Tab Nav */
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-secondary);
+      padding: 0.5rem 2rem 0;
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .tab-button {
+      padding: 0.75rem 1.25rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-button:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-button.active {
+      color: var(--accent-color);
+      border-bottom-color: var(--accent-color);
+    }
+
+    main {
+      flex: 1;
+      padding: 1.75rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Card Layouts */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* Form Elements */
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* --- Tab 1: Lecture Focus --- */
+    .timer-display {
+      font-family: "SF Mono", Monaco, "Consolas", monospace;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      text-align: center;
+      margin: 1rem 0;
+      letter-spacing: 2px;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .thought-dump-box {
+      background: rgba(244, 63, 94, 0.05);
+      border: 1px dashed rgba(244, 63, 94, 0.4);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .thought-dump-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .thought-dump-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .thought-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 180px;
+      overflow-y: auto;
+      margin-top: 0.75rem;
+    }
+
+    .thought-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .focus-checkin-item {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    /* --- Tab 2: Daily Review & Routines --- */
+    .routine-banner {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(168, 85, 247, 0.1));
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .active-tag {
+      background: var(--success);
+      color: #042f2e;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+    }
+
+    .subject-pill {
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .subject-pill.active {
+      background: var(--accent-color);
+      color: #0f172a;
+      border-color: var(--accent-color);
+    }
+
+    .review-step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--accent-color);
+      color: #0f172a;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+    }
+
+    /* --- Tab 3: Problem Breakdown --- */
+    .breakdown-step-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s;
+    }
+
+    .breakdown-step-card.active {
+      border-left-color: var(--accent-color);
+      background: rgba(56, 189, 248, 0.03);
+    }
+
+    .breakdown-step-card.completed {
+      border-left-color: var(--success);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .step-content {
+      margin-top: 0.9rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .formula-tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.5rem 0;
+    }
+
+    .formula-tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-family: monospace;
+    }
+    .formula-tag:hover {
+      color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    /* --- Tab 4: Weekly Report Builder --- */
+    .report-preview-container {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      max-height: 600px;
+      overflow-y: auto;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .report-preview-container h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-color);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.4rem;
+    }
+
+    .report-preview-container h3 {
+      font-size: 1.05rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #93c5fd;
+    }
+
+    .report-preview-container p {
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .report-preview-container pre {
+      background: var(--bg-secondary);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Modal / Toast Notifications */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-color);
+      color: var(--text-primary);
+      padding: 0.8rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+    .badge-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+    /* Advisory Callout Box */
+    .callout-box {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--accent-color);
+      border-left: 5px solid var(--accent-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .callout-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .callout-body {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Print styles */
+    @media print {
+      header, .nav-tabs, .btn, .card-header button, .thought-dump-box {
+        display: none !important;
+      }
+      body, main, .card, .report-preview-container {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .report-preview-container h2 {
+        color: black !important;
+        border-bottom: 1px solid #ccc !important;
+      }
+      .report-preview-container h3 {
+        color: #333 !important;
+      }
+      .tab-pane {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚗️</div>
+      <div>
+        <h1>CHEM-STUDY HUB</h1>
+        <p>전공 7과목 & 개인 루틴 올인원 로컬 스튜디오</p>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <div id="todayBadge" class="day-badge">
+        <span>📅</span> <span id="currentDateText">로딩 중...</span>
+      </div>
+      <button id="themeToggleBtn" class="btn btn-secondary btn-sm" title="테마 변경">
+        <span id="themeIcon">☀️</span> <span id="themeText">라이트 모드</span>
+      </button>
+      <button id="exportDataBtn" class="btn btn-secondary btn-sm" title="데이터 백업">
+        💾 백업
+      </button>
+      <label class="btn btn-secondary btn-sm" style="margin-bottom: 0; cursor: pointer;">
+        📂 복원 <input type="file" id="importFileInput" accept=".json" style="display:none;">
+      </label>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button class="tab-button active" data-tab="tab-lecture">
+      <span>🎯</span> 수업 집중 & 딴생각 차단
+    </button>
+    <button class="tab-button" data-tab="tab-daily">
+      <span>📅</span> 당일 복습 & 루틴 (영어/주식)
+    </button>
+    <button class="tab-button" data-tab="tab-breakdown">
+      <span>🧩</span> 문제 쪼개기 마스터 (Output)
+    </button>
+    <button class="tab-button" data-tab="tab-report">
+      <span>📝</span> 주간 레포트 작성기
+    </button>
+    <button class="tab-button" data-tab="tab-guide">
+      <span>💡</span> 학습 조언 & 가이드
+    </button>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- TAB 1: 수업 집중 & 딴생각 차단 -->
+    <section id="tab-lecture" class="tab-pane active">
+      <div class="callout-box">
+        <div class="callout-title">
+          <span>🧠</span> 딴생각 제어 메커니즘 (Thought-Dumping Strategy)
+        </div>
+        <div class="callout-body">
+          수업 중 딴생각이 날 때 억지로 참으려 하면 인지적 에너지만 소모됩니다. 번뜩 떠오른 생각(쇼핑, 주식, 잡생각 등)은 아래 <strong>"딴생각 임시보관함"</strong>에 1초 만에 적어버리고 수업이 끝난 뒤에 처리하세요. 머릿속의 RAM(작업 기억)을 비워야 교수님 목소리가 다시 들립니다!
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- 좌측: 강의 타이머 & 집중 핑 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⏱️ 실시간 강의 집중 모드</span>
+            <span id="lectureStatusBadge" class="badge badge-amber">대기 중</span>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+            <div style="flex: 2;">
+              <label>현재 수업 과목</label>
+              <select id="lectureSubjectSelect">
+                <option value="열및물질전달">열및물질전달</option>
+                <option value="촉매화학개론">촉매화학개론</option>
+                <option value="바이오촉매">바이오촉매</option>
+                <option value="유기화학2">유기화학2</option>
+                <option value="분석화학">분석화학</option>
+                <option value="유기화학실험">유기화학실험</option>
+                <option value="분석화학실험">분석화학실험</option>
+              </select>
+            </div>
+            <div style="flex: 1;">
+              <label>수업 시간 (분)</label>
+              <select id="lectureTimerDuration">
+                <option value="50">50분</option>
+                <option value="75">75분</option>
+                <option value="90">90분</option>
+                <option value="120">120분</option>
+                <option value="25">25분 (집중세션)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="timer-display" id="lectureTimerDisplay">50:00</div>
+
+          <div class="timer-controls">
+            <button id="startTimerBtn" class="btn btn-primary">▶ 수업 집중 시작</button>
+            <button id="pauseTimerBtn" class="btn btn-secondary">⏸ 일시정지</button>
+            <button id="resetTimerBtn" class="btn btn-secondary">🔄 리셋</button>
+          </div>
+
+          <div class="focus-checkin-item">
+            <label>⚡ 15분 마이크로 체크인 ("지금 교수님이 다루는 키워드는?")</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="liveKeywordInput" placeholder="예: Arrhenius 식, Michaelis 상수 Km, 추출 분배계수...">
+              <button id="addKeywordBtn" class="btn btn-primary btn-sm">기록</button>
+            </div>
+            <div id="liveKeywordList" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem;">
+              <!-- 키워드 태그들 -->
+            </div>
+          </div>
+
+          <div class="focus-checkin-item">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+              <label style="margin:0;">📊 현재 체감 이해도 게이지</label>
+              <span id="comprehensionValue" style="font-weight:700; color:var(--accent-color);">70%</span>
+            </div>
+            <input type="range" id="comprehensionSlider" min="10" max="100" value="70" style="width: 100%;">
+          </div>
+        </div>
+
+        <!-- 우측: 딴생각 쓰레기통 & 즉석 질문 메모 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🗑️ 딴생각 쓰레기통 (Brain Dump)</span>
+            <span class="badge badge-purple" id="thoughtCountBadge">0건 격리됨</span>
+          </div>
+
+          <div class="thought-dump-box">
+            <div class="thought-dump-header">
+              <span class="thought-dump-title">⚠️ "수업 끝나고 생각하자!"</span>
+              <button id="clearThoughtsBtn" class="btn btn-secondary btn-sm" style="font-size: 0.7rem;">비우기</button>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.6rem;">
+              딴생각이 떠오르면 바로 타이핑하고 엔터를 치세요. 머리에서 지워집니다.
+            </p>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="thoughtInput" placeholder="예: 주식 테슬라 실적 보기, 저녁에 닭가슴살 사기, 유튜브 쇼츠..." style="background:var(--bg-secondary);">
+              <button id="dumpThoughtBtn" class="btn btn-danger btn-sm">격리</button>
+            </div>
+            <ul class="thought-list" id="thoughtList">
+              <!-- 딴생각 목록 동적 렌더링 -->
+            </ul>
+          </div>
+
+          <div>
+            <label>❓ 수업 중 놓쳤거나 이해 안 된 질문 메모 (Q&A)</label>
+            <textarea id="lectureQuestionInput" placeholder="교수님이 슥 지나갔는데 이해 안 된 부분 적어두기 (수업 끝나고 책 찾거나 질문할 용도)"></textarea>
+            <div style="text-align: right; margin-top: 0.5rem;">
+              <button id="saveLectureNotesBtn" class="btn btn-secondary btn-sm">💾 이 수업 로그 저장</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: 당일 복습 & 개인 루틴 -->
+    <section id="tab-daily" class="tab-pane">
+      <div class="routine-banner">
+        <div>
+          <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.3rem;">
+            📌 오늘 일정 및 핵심 루틴
+          </h3>
+          <p id="routineStatusText" style="font-size:0.85rem; color:var(--text-secondary);">
+            요일을 계산 중입니다...
+          </p>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <span id="badgeEnglish" class="badge badge-blue">영어 회화 (월/수/금)</span>
+          <span id="badgeStock" class="badge badge-purple">주식 스터디 (월)</span>
+          <span class="badge badge-green">전공 7과목 당일 복습</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- 좌측: 비전공 개인 작업 (영어 회화 & 주식 스터디) -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🗣️ 영어 회화 & 📈 주식 스터디 워크스페이스</span>
+            <span class="badge badge-blue">개인 작업</span>
+          </div>
+
+          <!-- 영어 회화 세션 -->
+          <div style="margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <label style="font-weight:700; color:#38bdf8; font-size:0.95rem; margin:0;">
+                🇺🇸 영어 회화 (월 · 수 · 금)
+              </label>
+              <input type="checkbox" id="checkEnglishDone" style="transform: scale(1.2); cursor:pointer;">
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">
+              오늘 입으로 3번 소리 내어 말해볼 실전 표현 3개 정리
+            </p>
+            <textarea id="englishNotes" placeholder="Expression 1: I'd like to follow up on...&#10;Expression 2: It slipped my mind...&#10;Expression 3: When it comes to..."></textarea>
+          </div>
+
+          <!-- 주식 스터디 세션 -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <label style="font-weight:700; color:#c084fc; font-size:0.95rem; margin:0;">
+                📊 주식 스터디 (월요일)
+              </label>
+              <input type="checkbox" id="checkStockDone" style="transform: scale(1.2); cursor:pointer;">
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">
+              이번 주 관심 섹터, 기업 펀더멘털, 스터디 브리핑 핵심 요약
+            </p>
+            <textarea id="stockNotes" placeholder="1. 주간 거시경제 이슈 (금리, 환율, 유가)&#10;2. 분석 기업 및 투자 아이디어: &#10;3. 스터디원 피드백 & 모니터링 포인트:"></textarea>
+          </div>
+
+          <div style="margin-top: 1rem; text-align: right;">
+            <button id="savePersonalRoutineBtn" class="btn btn-primary btn-sm">💾 개인 작업 저장</button>
+          </div>
+        </div>
+
+        <!-- 우측: 전공 7과목 당일 골든타임 3단계 복습 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⚡ 전공 3단계 당일 복습 (Active Recall)</span>
+            <span class="badge badge-green">골든타임 10분</span>
+          </div>
+
+          <p style="font-size:0.825rem; color:var(--text-secondary); margin-bottom:0.8rem;">
+            강의 직후 복습하지 않으면 24시간 내 70%가 망각됩니다. 아래 3단계를 채우세요.
+          </p>
+
+          <div style="margin-bottom: 1rem;">
+            <label>복습할 과목 선택</label>
+            <div id="subjectPillGroup" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.4rem;">
+              <span class="subject-pill active" data-subject="열및물질전달">열및물질전달</span>
+              <span class="subject-pill" data-subject="촉매화학개론">촉매화학개론</span>
+              <span class="subject-pill" data-subject="바이오촉매">바이오촉매</span>
+              <span class="subject-pill" data-subject="유기화학2">유기화학2</span>
+              <span class="subject-pill" data-subject="분석화학">분석화학</span>
+              <span class="subject-pill" data-subject="유기화학실험">유기화학실험</span>
+              <span class="subject-pill" data-subject="분석화학실험">분석화학실험</span>
+            </div>
+          </div>
+
+          <!-- Step 1 -->
+          <div style="margin-bottom:0.85rem;">
+            <label><span class="review-step-badge">1</span> 오늘 배운 핵심 키워드 3가지</label>
+            <input type="text" id="dailyRecallKeywords" placeholder="예: Nusselt 수, 비활성화 메커니즘, Grignard 반응">
+          </div>
+
+          <!-- Step 2 -->
+          <div style="margin-bottom:0.85rem;">
+            <label><span class="review-step-badge">2</span> 중학생도 이해하게 한 문장으로 설명하기 (파인만 기법)</label>
+            <textarea id="dailyRecallFeynman" style="min-height:65px;" placeholder="교재 문장을 베끼지 말고 내 말로 직접 정의하기"></textarea>
+          </div>
+
+          <!-- Step 3 -->
+          <div style="margin-bottom:1rem;">
+            <label><span class="review-step-badge">3</span> 아직 애매하거나 시험에 나올 것 같은 질문 1개</label>
+            <input type="text" id="dailyRecallQuestion" placeholder="예: 왜 층류에서 Nusselt 수는 일정하게 3.66 혹은 4.36으로 수렴할까?">
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span id="recallSaveStatus" style="font-size:0.8rem; color:var(--success);"></span>
+            <button id="saveRecallBtn" class="btn btn-primary btn-sm">💾 당일 복습 저장</button>
+          </div>
+
+          <!-- 최근 복습한 히스토리 목록 -->
+          <div style="margin-top:1.5rem; border-top:1px solid var(--border-color); padding-top:1rem;">
+            <label style="margin-bottom:0.5rem;">📚 최근 저장된 복습 로그</label>
+            <div id="recentRecallLogs" style="max-height:160px; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem;">
+              <!-- 동적 생성 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: 문제 쪼개기 마스터 (Problem Breakdown) -->
+    <section id="tab-breakdown" class="tab-pane">
+      <div class="callout-box">
+        <div class="callout-title">
+          <span>🧩</span> 문제 풀이에 손이 안 가는 이유 & 극복법
+        </div>
+        <div class="callout-body">
+          전공 문제는 수식이 복잡하고 텍스트가 길어서 뇌가 <strong>"너무 큰 덩어리"</strong>로 인식하기 때문에 미루게 됩니다.
+          문제를 <strong>[조건 추출 ➡️ 지배 법칙 ➡️ 단순화 가정 ➡️ 계산 ➡️ 현실성 검증]</strong> 5단계로 쪼개면 손이 저절로 움직입니다. 첫 줄만 쓰면 80%는 푼 것입니다.
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- 좌측: 문제 입력 & 5단계 스캐폴딩 워크스페이스 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⚙️ 5단계 문제 해체기 (Micro-Scaffold)</span>
+            <span class="badge badge-amber" id="stepProgressBadge">진행률 0/5</span>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.8rem;">
+            <div style="flex:1;">
+              <label>과목</label>
+              <select id="probSubject">
+                <option value="열및물질전달">열및물질전달</option>
+                <option value="촉매화학개론">촉매화학개론</option>
+                <option value="바이오촉매">바이오촉매</option>
+                <option value="유기화학2">유기화학2</option>
+                <option value="분석화학">분석화학</option>
+                <option value="유기화학실험">유기화학실험</option>
+                <option value="분석화학실험">분석화학실험</option>
+              </select>
+            </div>
+            <div style="flex:2;">
+              <label>문제 제목 / 출처</label>
+              <input type="text" id="probTitle" placeholder="예: 열및물질전달 3장 원통형 전도 예제 3.4">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label>문제 원문 또는 핵심 문장</label>
+            <textarea id="probRawText" style="min-height:60px;" placeholder="문제에서 묻는 문장이나 수치를 간단히 붙여넣거나 적으세요"></textarea>
+          </div>
+
+          <!-- 5 Steps Accordion/Cards -->
+
+          <!-- Step 1 -->
+          <div class="breakdown-step-card active" id="stepCard1">
+            <div class="step-header" onclick="toggleStep(1)">
+              <div class="step-title">
+                <input type="checkbox" id="chkStep1" onclick="event.stopPropagation(); updateStepProgress();">
+                <span>Step 1. [조건 분리] 주어진 것(Given) & 구해야 하는 것(Find)</span>
+              </div>
+              <span id="stepIcon1">▼</span>
+            </div>
+            <div class="step-content" id="stepContent1">
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">
+                숫자와 단위를 기호로 바꾸세요 (예: r1=0.05m, T1=300K, k=15 W/mK / Find: q)
+              </p>
+              <textarea id="probStep1" style="min-height:55px;" placeholder="Given: &#10;Find: "></textarea>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="breakdown-step-card" id="stepCard2">
+            <div class="step-header" onclick="toggleStep(2)">
+              <div class="step-title">
+                <input type="checkbox" id="chkStep2" onclick="event.stopPropagation(); updateStepProgress();">
+                <span>Step 2. [지배 원리] 핵심 공식, 반응식, 지배 방정식</span>
+              </div>
+              <span id="stepIcon2">▶</span>
+            </div>
+            <div class="step-content" id="stepContent2" style="display:none;">
+              <div class="formula-tag-group">
+                <span style="font-size:0.75rem; color:var(--text-muted); margin-right:4px;">자주 쓰는 공식 클릭:</span>
+                <span class="formula-tag" onclick="insertFormula('Fourier: q = -k * A * (dT/dr)')">Fourier 열전도</span>
+                <span class="formula-tag" onclick="insertFormula('Newton Cooling: q = h * A * (Ts - Tinf)')">Newton 냉각</span>
+                <span class="formula-tag" onclick="insertFormula('Fick 1st Law: J = -D * (dC/dz)')">Fick 확산</span>
+                <span class="formula-tag" onclick="insertFormula('Michaelis-Menten: v = (Vmax * [S]) / (Km + [S])')">Michaelis-Menten</span>
+                <span class="formula-tag" onclick="insertFormula('Henderson-Hasselbalch: pH = pKa + log([A-]/[HA])')">pH 완충용액</span>
+                <span class="formula-tag" onclick="insertFormula('Arrhenius: k = A * exp(-Ea / (R*T))')">Arrhenius</span>
+              </div>
+              <textarea id="probStep2" style="min-height:55px;" placeholder="사용할 지배방정식 또는 메커니즘을 적으세요"></textarea>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="breakdown-step-card" id="stepCard3">
+            <div class="step-header" onclick="toggleStep(3)">
+              <div class="step-title">
+                <input type="checkbox" id="chkStep3" onclick="event.stopPropagation(); updateStepProgress();">
+                <span>Step 3. [단순화 가정] 무시할 수 있는 항 & 경계 조건</span>
+              </div>
+              <span id="stepIcon3">▶</span>
+            </div>
+            <div class="step-content" id="stepContent3" style="display:none;">
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">
+                예: 정상상태(Steady-state), 1차원 전도, 열물성치 일정, 이상기체 거동
+              </p>
+              <textarea id="probStep3" style="min-height:55px;" placeholder="1. Steady-state (d/dt = 0)&#10;2. 1-D conduction in r-direction"></textarea>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="breakdown-step-card" id="stepCard4">
+            <div class="step-header" onclick="toggleStep(4)">
+              <div class="step-title">
+                <input type="checkbox" id="chkStep4" onclick="event.stopPropagation(); updateStepProgress();">
+                <span>Step 4. [계산 & 대입] 단위(Unit) 확인하며 단계별 전개</span>
+              </div>
+              <span id="stepIcon4">▶</span>
+            </div>
+            <div class="step-content" id="stepContent4" style="display:none;">
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">
+                단위 변환 주의! (cm -> m, kJ -> J, °C -> K)
+              </p>
+              <textarea id="probStep4" style="min-height:70px;" placeholder="수식 전개 및 대입 계산 과정"></textarea>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="breakdown-step-card" id="stepCard5">
+            <div class="step-header" onclick="toggleStep(5)">
+              <div class="step-title">
+                <input type="checkbox" id="chkStep5" onclick="event.stopPropagation(); updateStepProgress();">
+                <span>Step 5. [현실성 검증] 정답 타당성 체크 (Reality Check)</span>
+              </div>
+              <span id="stepIcon5">▶</span>
+            </div>
+            <div class="step-content" id="stepContent5" style="display:none;">
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">
+                부호(+/-)가 맞는가? 온도가 현실적인 범위인가? 수율이 100%를 넘지 않는가?
+              </p>
+              <input type="text" id="probStep5" placeholder="최종 결과값 및 타당성 확인 메모 (예: q = 245.3 W, 열 흐름 방향 일치)">
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+            <button id="clearProbBtn" class="btn btn-secondary btn-sm">초기화</button>
+            <button id="saveProbBtn" class="btn btn-primary">✅ 풀이 완료 & 저장</button>
+          </div>
+        </div>
+
+        <!-- 우측: 풀이 히스토리 & 오답 아카이브 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📚 해결한 문제 보관함 & 복습 큐</span>
+            <span class="badge badge-green" id="solvedCountBadge">0문제 해결</span>
+          </div>
+          <div style="margin-bottom:0.75rem;">
+            <input type="text" id="searchSolvedInput" placeholder="과목이나 키워드로 검색...">
+          </div>
+          <div id="solvedProblemsList" style="max-height: 520px; overflow-y: auto; display:flex; flex-direction:column; gap:0.75rem;">
+            <!-- 저장된 문제 목록 카드 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: 주간 레포트 작성기 (Weekly Report Builder) -->
+    <section id="tab-report" class="tab-pane">
+      <div class="callout-box">
+        <div class="callout-title">
+          <span>📝</span> 레포트 작성 지원 대상 과목 (주간 정리 & 실험)
+        </div>
+        <div class="callout-body">
+          <strong>열및물질전달, 촉매화학개론, 바이오촉매, 분석화학</strong>의 주간 핵심 정리와 <strong>유기화학실험, 분석화학실험</strong> 결과 보고서 작성에 특화된 표준 공학 템플릿입니다. 각 섹션을 작성하면 우측에 실시간으로 완성본이 렌더링되며, 클릭 한 번으로 복사하거나 인쇄/PDF 저장할 수 있습니다.
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- 좌측: 레포트 입력 폼 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">✏️ 주간 레포트 에디터</span>
+            <span class="badge badge-blue" id="reportAutoSaveStatus">자동저장 활성</span>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-bottom: 0.8rem;">
+            <div style="flex: 2;">
+              <label>과목명</label>
+              <select id="reportSubject">
+                <option value="열및물질전달">열및물질전달</option>
+                <option value="촉매화학개론 / 바이오촉매">촉매화학개론 / 바이오촉매</option>
+                <option value="분석화학">분석화학</option>
+                <option value="유기화학2">유기화학2</option>
+                <option value="유기화학실험">유기화학실험</option>
+                <option value="분석화학실험">분석화학실험</option>
+              </select>
+            </div>
+            <div style="flex: 1;">
+              <label>주차 (Week)</label>
+              <select id="reportWeek">
+                <option value="1주차">1주차</option>
+                <option value="2주차">2주차</option>
+                <option value="3주차">3주차</option>
+                <option value="4주차">4주차</option>
+                <option value="5주차">5주차</option>
+                <option value="6주차">6주차</option>
+                <option value="7주차">7주차</option>
+                <option value="중간고사 정리">중간고사 정리</option>
+                <option value="9주차">9주차</option>
+                <option value="10주차">10주차</option>
+                <option value="11주차">11주차</option>
+                <option value="12주차">12주차</option>
+                <option value="13주차">13주차</option>
+                <option value="14주차">14주차</option>
+                <option value="기말고사 정리">기말고사 정리</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 0.8rem;">
+            <label>레포트 제목 / 실험 주제</label>
+            <input type="text" id="reportTitle" placeholder="예: [열전달] 원통 및 구 좌표계에서의 정상상태 1차원 열전도 해석">
+          </div>
+
+          <!-- Section 1 -->
+          <div style="margin-bottom: 0.8rem;">
+            <label>1. 핵심 요약 (Executive Summary / Abstract)</label>
+            <textarea id="reportSec1" placeholder="이번 주 다룬 핵심 개념의 목적과 최종 결론을 2~3줄로 요약"></textarea>
+          </div>
+
+          <!-- Section 2 -->
+          <div style="margin-bottom: 0.8rem;">
+            <label>2. 주요 이론 및 수식 / 반응 메커니즘 (Theory & Governing Equations)</label>
+            <textarea id="reportSec2" style="min-height: 100px;" placeholder="유도 수식, 지배 방정식, 촉매 반응 사이클, 시약 메커니즘 등"></textarea>
+          </div>
+
+          <!-- Section 3 -->
+          <div style="margin-bottom: 0.8rem;">
+            <label>3. 예제 풀이 / 실험 데이터 분석 (Case Study & Data Analysis)</label>
+            <textarea id="reportSec3" style="min-height: 100px;" placeholder="대표 예제 조건 및 풀이 결과, 실험 측정값, 오차율 계산 등"></textarea>
+          </div>
+
+          <!-- Section 4 -->
+          <div style="margin-bottom: 0.8rem;">
+            <label>4. 고찰 및 인사이트 (Discussion & Critical Engineering Thinking)</label>
+            <textarea id="reportSec4" style="min-height: 90px;" placeholder="공학적 의미, 가정의 한계점, 실험 오차 발생 원인, 실무 적용처"></textarea>
+          </div>
+
+          <!-- Section 5 -->
+          <div style="margin-bottom: 1rem;">
+            <label>5. 참고문헌 & 질의사항 (References & Questions)</label>
+            <input type="text" id="reportSec5" placeholder="교재 페이지, 참고 논문, 교수님께 질문할 내용">
+          </div>
+
+          <div style="display:flex; justify-content:space-between; gap:0.5rem;">
+            <button id="loadReportTemplateBtn" class="btn btn-secondary btn-sm">📋 추천 예시 불러오기</button>
+            <button id="saveReportDraftBtn" class="btn btn-primary btn-sm">💾 레포트 저장</button>
+          </div>
+        </div>
+
+        <!-- 우측: 실시간 미리보기 & 내보내기 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📄 실시간 레포트 프리뷰 (Preview)</span>
+            <div style="display:flex; gap:0.4rem;">
+              <button id="copyReportTextBtn" class="btn btn-secondary btn-sm" title="클립보드에 마크다운 복사">📋 텍스트 복사</button>
+              <button id="printReportBtn" class="btn btn-primary btn-sm" title="인쇄 또는 PDF 저장">🖨️ PDF/인쇄</button>
+            </div>
+          </div>
+
+          <div class="report-preview-container" id="reportPreviewContainer">
+            <!-- 실시간 동적 렌더링 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: 학습 조언 & 가이드 -->
+    <section id="tab-guide" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">💡 "웹앱이 진짜 내 공부에 도움이 될까? 앱으로 만드는 게 낫지 않을까?" 에 대한 조언</span>
+        </div>
+        <div style="line-height: 1.8; color: var(--text-secondary); font-size: 0.95rem;">
+          <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.15rem;">
+            1. 왜 네이티브 앱(iOS/Mac 앱)보다 "이 로컬 웹앱"이 현재 사용자에게 최적일까요?
+          </h3>
+          <ul style="margin-left: 1.25rem; margin-bottom: 1.25rem;">
+            <li><strong>즉시성 & 진입 장벽 제로:</strong> 앱 개발을 하려면 Swift나 Flutter, Xcode 빌드, 서명, 업데이트 등 부수적인 개발에 시간을 엄청 쏟아야 합니다. 하지만 지금 당장 필요한 건 <strong>'이번 학기 7개 전공 성적과 루틴 사수'</strong>입니다.</li>
+            <li><strong>공부 환경의 일치:</strong> 수업을 듣거나 전공 문제를 풀 때는 핸드폰보다 <strong>MacBook을 펴놓고 PDF 슬라이드를 볼 때가 90% 이상</strong>입니다. 브라우저 창 하나 띄워두고 스플릿 뷰(화면 분할)로 옆에 띄워두면 어떤 앱보다 빠르게 키보드로 타이핑할 수 있습니다.</li>
+            <li><strong>클라이언트 100% 로컬 보안 & 오프라인:</strong> 서버도 없고 데이터 유출도 없으며 와이파이가 끊긴 지하 강의실이나 열람실에서도 <code>index.html</code> 더블클릭만으로 즉각 열립니다.</li>
+            <li><strong>맥에서 앱처럼 쓰는 팁:</strong> Chrome이나 Safari 메뉴에서 <em>[파일] ➡️ [Dock에 추가]</em> 또는 <em>[웹앱으로 설치]</em>를 누르면 일반 Mac 데스크톱 앱처럼 독립 창으로 깔끔하게 독(Dock)에 띄워둘 수 있습니다!</li>
+          </ul>
+
+          <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.15rem;">
+            2. 질문자님의 4가지 병목 현상에 대한 맞춤형 행동 전략
+          </h3>
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div style="background: var(--bg-input); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+              <h4 style="color: var(--danger); margin-bottom: 0.4rem;">🎯 1. 수업 중 딴생각 제어</h4>
+              <p style="font-size: 0.875rem;">
+                딴생각을 "하지 말아야지" 하면 더 생각납니다(백곰 효과). <strong>[딴생각 쓰레기통]</strong>에 1초 만에 적어두고 엔터 치세요. "수업 끝나고 볼 거니까 지금은 뇌에서 지운다"고 뇌를 안심시키는 가장 검증된 심리학적 인지 비우기 기법입니다.
+              </p>
+            </div>
+
+            <div style="background: var(--bg-input); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+              <h4 style="color: var(--success); margin-bottom: 0.4rem;">📅 2. 당일 즉시 복습 & 개인 작업</h4>
+              <p style="font-size: 0.875rem;">
+                수업 끝나고 책을 통째로 다시 보려면 지칩니다. 딱 <strong>3단계(키워드 3개 ➡️ 한 문장 설명 ➡️ 애매한 질문 1개)</strong>만 채우세요. 월/수/금 영어 회화, 월요일 주식 스터디도 요일마다 체크리스트가 자동 강조되니 하루 10분만 투자하세요.
+              </p>
+            </div>
+
+            <div style="background: var(--bg-input); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+              <h4 style="color: var(--purple); margin-bottom: 0.4rem;">🧩 3. 문제 풀이 손 안 가는 병목 해소</h4>
+              <p style="font-size: 0.875rem;">
+                전공 문제(열전달 미분방정식, 촉매 속도식 등)는 머릿속으로 답을 내려고 하면 뇌가 거부합니다. <strong>Step 1(주어진 조건 기호로 쓰기)</strong>만 딱 쓰세요. 첫 줄을 쓰면 관성의 법칙에 의해 Step 2(공식 선택), Step 3으로 자연스럽게 풀립니다.
+              </p>
+            </div>
+
+            <div style="background: var(--bg-input); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+              <h4 style="color: var(--accent-color); margin-bottom: 0.4rem;">📝 4. 주간 레포트 (열물단, 촉매, 분석)</h4>
+              <p style="font-size: 0.875rem;">
+                주말에 백지 상태에서 쓰려면 막막합니다. 수업 직후 당일 복습 폼에 적었던 키워드와 문제 풀이 히스토리를 <strong>[주간 레포트 작성기]</strong> 5개 섹션에 붙여넣기만 하면 자동으로 정제된 레포트 형태가 완성됩니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span id="toastIcon">💾</span>
+    <span id="toastMessage">저장되었습니다.</span>
+  </div>
+
+  <!-- Application Logic (Vanilla JS, Pure Local Storage, No External Dependencies) -->
+  <script>
+    /* --- Storage Keys --- */
+    const STORAGE_PREFIX = "chemstudy_";
+    const KEYS = {
+      THOUGHTS: STORAGE_PREFIX + "thoughts",
+      LECTURE_LOGS: STORAGE_PREFIX + "lecture_logs",
+      PERSONAL_ROUTINE: STORAGE_PREFIX + "personal_routine",
+      DAILY_RECALL: STORAGE_PREFIX + "daily_recall",
+      SOLVED_PROBLEMS: STORAGE_PREFIX + "solved_problems",
+      REPORT_DRAFT: STORAGE_PREFIX + "report_draft",
+      THEME: STORAGE_PREFIX + "theme"
+    };
+
+    /* --- State --- */
+    let timerInterval = null;
+    let timerSecondsLeft = 50 * 60;
+    let timerRunning = false;
+    let currentKeywords = [];
+    let selectedRecallSubject = "열및물질전달";
+
+    /* --- Helper Functions --- */
+    function showToast(msg, icon = "💾") {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMessage").innerText = msg;
+      document.getElementById("toastIcon").innerText = icon;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function getStorage(key, defaultVal) {
+      try {
+        const val = localStorage.getItem(key);
+        return val ? JSON.parse(val) : defaultVal;
+      } catch (e) {
+        return defaultVal;
+      }
+    }
+
+    function setStorage(key, val) {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch (e) {
+        console.error("Storage error:", e);
+      }
+    }
+
+    /* --- Date & Routine Header Setup --- */
+    function updateDateAndHeader() {
+      const now = new Date();
+      const days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+      const dayName = days[now.getDay()];
+      const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')} (${dayName})`;
+      document.getElementById("currentDateText").innerText = dateStr;
+
+      // Routine text & highlight
+      const routineStatusText = document.getElementById("routineStatusText");
+      const badgeEng = document.getElementById("badgeEnglish");
+      const badgeStock = document.getElementById("badgeStock");
+
+      const isMon = now.getDay() === 1;
+      const isWed = now.getDay() === 3;
+      const isFri = now.getDay() === 5;
+
+      let todayTasks = [];
+      if (isMon || isWed || isFri) {
+        todayTasks.push("영어 회화");
+        badgeEng.style.border = "2px solid #38bdf8";
+        badgeEng.style.fontWeight = "700";
+      } else {
+        badgeEng.style.opacity = "0.45";
+      }
+
+      if (isMon) {
+        todayTasks.push("주식 스터디");
+        badgeStock.style.border = "2px solid #c084fc";
+        badgeStock.style.fontWeight = "700";
+      } else {
+        badgeStock.style.opacity = "0.45";
+      }
+
+      todayTasks.push("전공 7과목 당일 복습");
+
+      routineStatusText.innerHTML = `오늘은 <strong>${dayName}</strong>입니다. 예정된 루틴: <span style="color:var(--accent-color); font-weight:600;">${todayTasks.join(" + ")}</span>`;
+    }
+
+    /* --- Tabs Switching --- */
+    document.querySelectorAll(".tab-button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+
+        btn.classList.add("active");
+        const tabId = btn.getAttribute("data-tab");
+        document.getElementById(tabId).classList.add("active");
+      });
+    });
+
+    /* --- Theme Toggle --- */
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    function applyTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      if (theme === "light") {
+        document.getElementById("themeIcon").innerText = "🌙";
+        document.getElementById("themeText").innerText = "다크 모드";
+      } else {
+        document.getElementById("themeIcon").innerText = "☀️";
+        document.getElementById("themeText").innerText = "라이트 모드";
+      }
+      setStorage(KEYS.THEME, theme);
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const current = document.body.getAttribute("data-theme");
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
+
+    /* --- TAB 1: Lecture Timer & Focus --- */
+    const lectureTimerDisplay = document.getElementById("lectureTimerDisplay");
+    const startTimerBtn = document.getElementById("startTimerBtn");
+    const pauseTimerBtn = document.getElementById("pauseTimerBtn");
+    const resetTimerBtn = document.getElementById("resetTimerBtn");
+    const lectureDurationSelect = document.getElementById("lectureTimerDuration");
+    const lectureSubjectSelect = document.getElementById("lectureSubjectSelect");
+    const lectureStatusBadge = document.getElementById("lectureStatusBadge");
+    const comprehensionSlider = document.getElementById("comprehensionSlider");
+    const comprehensionValue = document.getElementById("comprehensionValue");
+
+    comprehensionSlider.addEventListener("input", (e) => {
+      comprehensionValue.innerText = `${e.target.value}%`;
+    });
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay() {
+      lectureTimerDisplay.innerText = formatTime(timerSecondsLeft);
+    }
+
+    lectureDurationSelect.addEventListener("change", () => {
+      if (!timerRunning) {
+        timerSecondsLeft = parseInt(lectureDurationSelect.value, 10) * 60;
+        updateTimerDisplay();
+      }
+    });
+
+    startTimerBtn.addEventListener("click", () => {
+      if (timerRunning) return;
+      timerRunning = true;
+      lectureStatusBadge.className = "badge badge-green";
+      lectureStatusBadge.innerText = `${lectureSubjectSelect.value} 집중 중!`;
+      startTimerBtn.innerText = "⏳ 진행 중...";
+
+      timerInterval = setInterval(() => {
+        if (timerSecondsLeft > 0) {
+          timerSecondsLeft--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          lectureStatusBadge.className = "badge badge-blue";
+          lectureStatusBadge.innerText = "수업 종료! 수고하셨습니다";
+          startTimerBtn.innerText = "▶ 수업 집중 시작";
+          showToast("수업 종료! 지금 바로 '당일 복습' 탭으로 넘어가세요!", "🔔");
+        }
+      }, 1000);
+    });
+
+    pauseTimerBtn.addEventListener("click", () => {
+      if (!timerRunning) return;
+      clearInterval(timerInterval);
+      timerRunning = false;
+      lectureStatusBadge.className = "badge badge-amber";
+      lectureStatusBadge.innerText = "일시정지됨";
+      startTimerBtn.innerText = "▶ 다시 시작";
+    });
+
+    resetTimerBtn.addEventListener("click", () => {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSecondsLeft = parseInt(lectureDurationSelect.value, 10) * 60;
+      updateTimerDisplay();
+      lectureStatusBadge.className = "badge badge-amber";
+      lectureStatusBadge.innerText = "대기 중";
+      startTimerBtn.innerText = "▶ 수업 집중 시작";
+    });
+
+    // 15-min Keyword Pings
+    const liveKeywordInput = document.getElementById("liveKeywordInput");
+    const addKeywordBtn = document.getElementById("addKeywordBtn");
+    const liveKeywordList = document.getElementById("liveKeywordList");
+
+    function renderKeywords() {
+      liveKeywordList.innerHTML = "";
+      currentKeywords.forEach((kw, index) => {
+        const tag = document.createElement("span");
+        tag.className = "badge badge-blue";
+        tag.style.display = "inline-flex";
+        tag.style.alignItems = "center";
+        tag.style.gap = "0.3rem";
+        tag.innerHTML = `${kw} <span style="cursor:pointer; opacity:0.7;" onclick="removeKeyword(${index})">✕</span>`;
+        liveKeywordList.appendChild(tag);
+      });
+    }
+
+    window.removeKeyword = function(index) {
+      currentKeywords.splice(index, 1);
+      renderKeywords();
+    };
+
+    function addKeyword() {
+      const val = liveKeywordInput.value.trim();
+      if (!val) return;
+      currentKeywords.push(val);
+      liveKeywordInput.value = "";
+      renderKeywords();
+      showToast(`키워드 '${val}' 추가됨`, "⚡");
+    }
+
+    addKeywordBtn.addEventListener("click", addKeyword);
+    liveKeywordInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addKeyword();
+      }
+    });
+
+    // Thought Dump
+    const thoughtInput = document.getElementById("thoughtInput");
+    const dumpThoughtBtn = document.getElementById("dumpThoughtBtn");
+    const thoughtList = document.getElementById("thoughtList");
+    const clearThoughtsBtn = document.getElementById("clearThoughtsBtn");
+    const thoughtCountBadge = document.getElementById("thoughtCountBadge");
+
+    function getThoughts() {
+      return getStorage(KEYS.THOUGHTS, []);
+    }
+
+    function renderThoughts() {
+      const list = getThoughts();
+      thoughtList.innerHTML = "";
+      thoughtCountBadge.innerText = `${list.length}건 격리됨`;
+
+      if (list.length === 0) {
+        thoughtList.innerHTML = `<li style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:0.5rem;">격리된 딴생각이 없습니다. 맑은 정신 유지 중! ✨</li>`;
+        return;
+      }
+
+      list.forEach((item, idx) => {
+        const li = document.createElement("li");
+        li.className = "thought-item";
+        li.innerHTML = `
+          <span>${item.text} <small style="color:var(--text-muted); font-size:0.7rem;">(${item.time})</small></span>
+          <button class="btn btn-secondary btn-sm" style="padding:0.15rem 0.4rem; font-size:0.7rem;" onclick="deleteThought(${idx})">해결</button>
+        `;
+        thoughtList.appendChild(li);
+      });
+    }
+
+    window.deleteThought = function(idx) {
+      const list = getThoughts();
+      list.splice(idx, 1);
+      setStorage(KEYS.THOUGHTS, list);
+      renderThoughts();
+      showToast("딴생각 1건 삭제 처리됨", "🗑️");
+    };
+
+    function dumpThought() {
+      const val = thoughtInput.value.trim();
+      if (!val) return;
+      const list = getThoughts();
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      list.unshift({ text: val, time: timeStr });
+      setStorage(KEYS.THOUGHTS, list);
+      thoughtInput.value = "";
+      renderThoughts();
+      showToast("딴생각을 격리했습니다. 수업에 다시 집중하세요!", "🧠");
+    }
+
+    dumpThoughtBtn.addEventListener("click", dumpThought);
+    thoughtInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        dumpThought();
+      }
+    });
+
+    clearThoughtsBtn.addEventListener("click", () => {
+      if (confirm("모든 딴생각 목록을 비우시겠습니까?")) {
+        setStorage(KEYS.THOUGHTS, []);
+        renderThoughts();
+      }
+    });
+
+    // Save Lecture Log
+    const saveLectureNotesBtn = document.getElementById("saveLectureNotesBtn");
+    saveLectureNotesBtn.addEventListener("click", () => {
+      const subject = lectureSubjectSelect.value;
+      const question = document.getElementById("lectureQuestionInput").value.trim();
+      const comprehension = comprehensionSlider.value;
+
+      const log = {
+        date: new Date().toISOString(),
+        subject,
+        keywords: [...currentKeywords],
+        comprehension,
+        question
+      };
+
+      const logs = getStorage(KEYS.LECTURE_LOGS, []);
+      logs.unshift(log);
+      setStorage(KEYS.LECTURE_LOGS, logs);
+
+      showToast(`[${subject}] 수업 메모 및 로그 저장 완료!`, "💾");
+    });
+
+    /* --- TAB 2: Daily Routines & Active Recall --- */
+    const englishNotes = document.getElementById("englishNotes");
+    const stockNotes = document.getElementById("stockNotes");
+    const checkEnglishDone = document.getElementById("checkEnglishDone");
+    const checkStockDone = document.getElementById("checkStockDone");
+    const savePersonalRoutineBtn = document.getElementById("savePersonalRoutineBtn");
+
+    function loadPersonalRoutine() {
+      const data = getStorage(KEYS.PERSONAL_ROUTINE, {
+        english: "",
+        englishDone: false,
+        stock: "",
+        stockDone: false,
+        lastUpdated: ""
+      });
+      englishNotes.value = data.english || "";
+      checkEnglishDone.checked = !!data.englishDone;
+      stockNotes.value = data.stock || "";
+      checkStockDone.checked = !!data.stockDone;
+    }
+
+    savePersonalRoutineBtn.addEventListener("click", () => {
+      const data = {
+        english: englishNotes.value,
+        englishDone: checkEnglishDone.checked,
+        stock: stockNotes.value,
+        stockDone: checkStockDone.checked,
+        lastUpdated: new Date().toLocaleDateString()
+      };
+      setStorage(KEYS.PERSONAL_ROUTINE, data);
+      showToast("개인 작업(영어/주식) 저장 완료!", "✅");
+    });
+
+    // 3-Step Active Recall
+    const subjectPills = document.querySelectorAll("#subjectPillGroup .subject-pill");
+    const dailyRecallKeywords = document.getElementById("dailyRecallKeywords");
+    const dailyRecallFeynman = document.getElementById("dailyRecallFeynman");
+    const dailyRecallQuestion = document.getElementById("dailyRecallQuestion");
+    const saveRecallBtn = document.getElementById("saveRecallBtn");
+    const recentRecallLogs = document.getElementById("recentRecallLogs");
+
+    subjectPills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        subjectPills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        selectedRecallSubject = pill.getAttribute("data-subject");
+        loadSubjectRecall(selectedRecallSubject);
+      });
+    });
+
+    function loadSubjectRecall(subject) {
+      const recalls = getStorage(KEYS.DAILY_RECALL, {});
+      const cur = recalls[subject] || { keywords: "", feynman: "", question: "" };
+      dailyRecallKeywords.value = cur.keywords || "";
+      dailyRecallFeynman.value = cur.feynman || "";
+      dailyRecallQuestion.value = cur.question || "";
+    }
+
+    saveRecallBtn.addEventListener("click", () => {
+      const recalls = getStorage(KEYS.DAILY_RECALL, {});
+      const data = {
+        subject: selectedRecallSubject,
+        keywords: dailyRecallKeywords.value.trim(),
+        feynman: dailyRecallFeynman.value.trim(),
+        question: dailyRecallQuestion.value.trim(),
+        timestamp: new Date().toLocaleString()
+      };
+      recalls[selectedRecallSubject] = data;
+      setStorage(KEYS.DAILY_RECALL, recalls);
+
+      showToast(`[${selectedRecallSubject}] 당일 3단계 복습 저장 완료!`, "🚀");
+      renderRecallHistory();
+    });
+
+    function renderRecallHistory() {
+      const recalls = getStorage(KEYS.DAILY_RECALL, {});
+      recentRecallLogs.innerHTML = "";
+      const keys = Object.keys(recalls);
+      if (keys.length === 0) {
+        recentRecallLogs.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted); text-align:center;">아직 저장된 당일 복습 내용이 없습니다.</span>`;
+        return;
+      }
+
+      keys.forEach(sub => {
+        const item = recalls[sub];
+        if (!item.keywords && !item.feynman) return;
+        const div = document.createElement("div");
+        div.style.background = "var(--bg-input)";
+        div.style.border = "1px solid var(--border-color)";
+        div.style.borderRadius = "6px";
+        div.style.padding = "0.6rem 0.8rem";
+        div.style.fontSize = "0.825rem";
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+            <strong style="color:var(--accent-color);">${item.subject}</strong>
+            <span style="color:var(--text-muted); font-size:0.75rem;">${item.timestamp || ""}</span>
+          </div>
+          <div><strong>핵심:</strong> ${item.keywords || "-"}</div>
+          <div style="color:var(--text-secondary); margin-top:0.2rem;"><strong>요약:</strong> ${item.feynman || "-"}</div>
+        `;
+        recentRecallLogs.appendChild(div);
+      });
+    }
+
+    /* --- TAB 3: Problem Breakdown Scaffolder --- */
+    window.toggleStep = function(stepNum) {
+      const card = document.getElementById(`stepCard${stepNum}`);
+      const content = document.getElementById(`stepContent${stepNum}`);
+      const icon = document.getElementById(`stepIcon${stepNum}`);
+      if (content.style.display === "none") {
+        content.style.display = "block";
+        icon.innerText = "▼";
+        card.classList.add("active");
+      } else {
+        content.style.display = "none";
+        icon.innerText = "▶";
+        card.classList.remove("active");
+      }
+    };
+
+    window.insertFormula = function(formulaText) {
+      const step2Input = document.getElementById("probStep2");
+      step2Input.value = step2Input.value ? step2Input.value + "\n" + formulaText : formulaText;
+      showToast("공식이 입력되었습니다", "⚗️");
+    };
+
+    window.updateStepProgress = function() {
+      let count = 0;
+      for (let i = 1; i <= 5; i++) {
+        const chk = document.getElementById(`chkStep${i}`);
+        const card = document.getElementById(`stepCard${i}`);
+        if (chk.checked) {
+          count++;
+          card.classList.add("completed");
+        } else {
+          card.classList.remove("completed");
+        }
+      }
+      document.getElementById("stepProgressBadge").innerText = `진행률 ${count}/5`;
+      if (count === 5) {
+        document.getElementById("stepProgressBadge").className = "badge badge-green";
+      } else {
+        document.getElementById("stepProgressBadge").className = "badge badge-amber";
+      }
+    };
+
+    const clearProbBtn = document.getElementById("clearProbBtn");
+    const saveProbBtn = document.getElementById("saveProbBtn");
+    const solvedProblemsList = document.getElementById("solvedProblemsList");
+    const solvedCountBadge = document.getElementById("solvedCountBadge");
+    const searchSolvedInput = document.getElementById("searchSolvedInput");
+
+    function clearProblemForm() {
+      document.getElementById("probTitle").value = "";
+      document.getElementById("probRawText").value = "";
+      document.getElementById("probStep1").value = "";
+      document.getElementById("probStep2").value = "";
+      document.getElementById("probStep3").value = "";
+      document.getElementById("probStep4").value = "";
+      document.getElementById("probStep5").value = "";
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`chkStep${i}`).checked = false;
+        document.getElementById(`stepCard${i}`).classList.remove("completed");
+      }
+      updateStepProgress();
+    }
+
+    clearProbBtn.addEventListener("click", () => {
+      if (confirm("현재 입력 중인 문제 풀이 내용을 비우시겠습니까?")) {
+        clearProblemForm();
+      }
+    });
+
+    saveProbBtn.addEventListener("click", () => {
+      const subject = document.getElementById("probSubject").value;
+      const title = document.getElementById("probTitle").value.trim() || `${subject} 문제`;
+      const rawText = document.getElementById("probRawText").value.trim();
+      const step1 = document.getElementById("probStep1").value.trim();
+      const step2 = document.getElementById("probStep2").value.trim();
+      const step3 = document.getElementById("probStep3").value.trim();
+      const step4 = document.getElementById("probStep4").value.trim();
+      const step5 = document.getElementById("probStep5").value.trim();
+
+      if (!step1 && !step2 && !step4) {
+        alert("풀이 단계(Step 1, 2, 4 등)를 최소 1개 이상 작성해주세요!");
+        return;
+      }
+
+      const problemObj = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        subject,
+        title,
+        rawText,
+        steps: { step1, step2, step3, step4, step5 }
+      };
+
+      const solvedList = getStorage(KEYS.SOLVED_PROBLEMS, []);
+      solvedList.unshift(problemObj);
+      setStorage(KEYS.SOLVED_PROBLEMS, solvedList);
+
+      showToast(`[${title}] 문제 풀이 완료 및 아카이빙 성공!`, "🎉");
+      renderSolvedProblems();
+      clearProblemForm();
+    });
+
+    function renderSolvedProblems(filter = "") {
+      const list = getStorage(KEYS.SOLVED_PROBLEMS, []);
+      solvedProblemsList.innerHTML = "";
+      const filtered = list.filter(item => {
+        if (!filter) return true;
+        const query = filter.toLowerCase();
+        return (item.title && item.title.toLowerCase().includes(query)) ||
+               (item.subject && item.subject.toLowerCase().includes(query)) ||
+               (item.rawText && item.rawText.toLowerCase().includes(query));
+      });
+
+      solvedCountBadge.innerText = `${list.length}문제 해결`;
+
+      if (filtered.length === 0) {
+        solvedProblemsList.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:2rem; font-size:0.85rem;">해결된 문제가 없습니다. 좌측에서 문제를 쪼개어 풀어보세요!</div>`;
+        return;
+      }
+
+      filtered.forEach(prob => {
+        const itemCard = document.createElement("div");
+        itemCard.style.background = "var(--bg-input)";
+        itemCard.style.border = "1px solid var(--border-color)";
+        itemCard.style.borderRadius = "8px";
+        itemCard.style.padding = "0.9rem 1.1rem";
+
+        itemCard.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
+            <div>
+              <span class="badge badge-blue" style="font-size:0.7rem; margin-right:0.3rem;">${prob.subject}</span>
+              <strong style="font-size:0.92rem;">${prob.title}</strong>
+            </div>
+            <div style="display:flex; gap:0.4rem; align-items:center;">
+              <small style="color:var(--text-muted); font-size:0.75rem;">${prob.date}</small>
+              <button class="btn btn-secondary btn-sm" style="padding:0.15rem 0.4rem; font-size:0.7rem;" onclick="loadProblemToEditor(${prob.id})">불러오기</button>
+              <button class="btn btn-danger btn-sm" style="padding:0.15rem 0.4rem; font-size:0.7rem;" onclick="deleteProblem(${prob.id})">삭제</button>
+            </div>
+          </div>
+          ${prob.rawText ? `<p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem; white-space:pre-wrap;">${prob.rawText.substring(0, 100)}...</p>` : ''}
+          <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">
+            <div><strong>조건:</strong> ${prob.steps.step1 ? prob.steps.step1.replace(/\n/g, ' ') : '-'}</div>
+            <div><strong>공식:</strong> ${prob.steps.step2 ? prob.steps.step2.replace(/\n/g, ' ') : '-'}</div>
+            ${prob.steps.step5 ? `<div style="color:var(--success); font-weight:600;">결과: ${prob.steps.step5}</div>` : ''}
+          </div>
+        `;
+        solvedProblemsList.appendChild(itemCard);
+      });
+    }
+
+    searchSolvedInput.addEventListener("input", (e) => {
+      renderSolvedProblems(e.target.value);
+    });
+
+    window.deleteProblem = function(id) {
+      if (confirm("이 풀이 기록을 삭제하시겠습니까?")) {
+        const list = getStorage(KEYS.SOLVED_PROBLEMS, []).filter(p => p.id !== id);
+        setStorage(KEYS.SOLVED_PROBLEMS, list);
+        renderSolvedProblems(searchSolvedInput.value);
+        showToast("풀이 기록이 삭제되었습니다", "🗑️");
+      }
+    };
+
+    window.loadProblemToEditor = function(id) {
+      const prob = getStorage(KEYS.SOLVED_PROBLEMS, []).find(p => p.id === id);
+      if (!prob) return;
+      document.getElementById("probSubject").value = prob.subject;
+      document.getElementById("probTitle").value = prob.title;
+      document.getElementById("probRawText").value = prob.rawText || "";
+      document.getElementById("probStep1").value = prob.steps.step1 || "";
+      document.getElementById("probStep2").value = prob.steps.step2 || "";
+      document.getElementById("probStep3").value = prob.steps.step3 || "";
+      document.getElementById("probStep4").value = prob.steps.step4 || "";
+      document.getElementById("probStep5").value = prob.steps.step5 || "";
+
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`stepContent${i}`).style.display = "block";
+        document.getElementById(`stepIcon${i}`).innerText = "▼";
+        document.getElementById(`chkStep${i}`).checked = true;
+      }
+      updateStepProgress();
+      showToast("에디터에 문제를 불러왔습니다", "📂");
+    };
+
+    /* --- TAB 4: Weekly Report Builder --- */
+    const reportSubject = document.getElementById("reportSubject");
+    const reportWeek = document.getElementById("reportWeek");
+    const reportTitle = document.getElementById("reportTitle");
+    const reportSec1 = document.getElementById("reportSec1");
+    const reportSec2 = document.getElementById("reportSec2");
+    const reportSec3 = document.getElementById("reportSec3");
+    const reportSec4 = document.getElementById("reportSec4");
+    const reportSec5 = document.getElementById("reportSec5");
+    const reportPreviewContainer = document.getElementById("reportPreviewContainer");
+    const saveReportDraftBtn = document.getElementById("saveReportDraftBtn");
+    const copyReportTextBtn = document.getElementById("copyReportTextBtn");
+    const printReportBtn = document.getElementById("printReportBtn");
+    const loadReportTemplateBtn = document.getElementById("loadReportTemplateBtn");
+
+    function renderReportPreview() {
+      const sub = reportSubject.value;
+      const wk = reportWeek.value;
+      const title = reportTitle.value.trim() || `${sub} ${wk} 주간 학습/실험 레포트`;
+      const s1 = reportSec1.value.trim() || "(핵심 요약을 작성하세요)";
+      const s2 = reportSec2.value.trim() || "(주요 이론 및 지배 수식을 작성하세요)";
+      const s3 = reportSec3.value.trim() || "(예제 풀이 및 데이터 분석을 작성하세요)";
+      const s4 = reportSec4.value.trim() || "(공학적 고찰 및 한계점을 작성하세요)";
+      const s5 = reportSec5.value.trim() || "(참고문헌 및 질문사항)";
+
+      reportPreviewContainer.innerHTML = `
+        <h2>[${sub}] ${wk} : ${title}</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+          작성일자: ${new Date().toLocaleDateString()} | 작성자: 화학공학/화학 전공자
+        </p>
+
+        <h3>1. 핵심 요약 (Executive Summary)</h3>
+        <p style="white-space:pre-wrap;">${s1}</p>
+
+        <h3>2. 이론적 배경 및 지배 방정식 (Theory & Equations)</h3>
+        <pre><code>${s2}</code></pre>
+
+        <h3>3. 예제 풀이 및 데이터 분석 (Case Study & Data Analysis)</h3>
+        <pre><code>${s3}</code></pre>
+
+        <h3>4. 고찰 및 토론 (Discussion & Engineering Insights)</h3>
+        <p style="white-space:pre-wrap;">${s4}</p>
+
+        <h3>5. 참고문헌 & 질의사항 (References & Q&A)</h3>
+        <p style="font-size:0.85rem; color:var(--text-secondary);">${s5}</p>
+      `;
+
+      // Auto save draft to localStorage
+      const draft = {
+        sub, wk, title, s1, s2, s3, s4, s5,
+        updated: new Date().toISOString()
+      };
+      setStorage(KEYS.REPORT_DRAFT, draft);
+    }
+
+    [reportSubject, reportWeek, reportTitle, reportSec1, reportSec2, reportSec3, reportSec4, reportSec5].forEach(el => {
+      el.addEventListener("input", renderReportPreview);
+      el.addEventListener("change", renderReportPreview);
+    });
+
+    saveReportDraftBtn.addEventListener("click", () => {
+      renderReportPreview();
+      showToast("레포트 초안이 안전하게 저장되었습니다!", "💾");
+    });
+
+    copyReportTextBtn.addEventListener("click", () => {
+      const sub = reportSubject.value;
+      const wk = reportWeek.value;
+      const title = reportTitle.value.trim() || `${sub} ${wk} 레포트`;
+      const text = `# [${sub}] ${wk} : ${title}\n작성일자: ${new Date().toLocaleDateString()}\n\n## 1. 핵심 요약 (Executive Summary)\n${reportSec1.value}\n\n## 2. 이론적 배경 및 지배 방정식\n${reportSec2.value}\n\n## 3. 예제 풀이 및 데이터 분석\n${reportSec3.value}\n\n## 4. 고찰 및 토론 (Discussion)\n${reportSec4.value}\n\n## 5. 참고문헌 & 질의사항\n${reportSec5.value}\n`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("마크다운 형식으로 클립보드에 복사되었습니다!", "📋");
+      }).catch(() => {
+        alert("클립보드 복사 권한이 필요합니다. 내용을 직접 드래그 복사해주세요.");
+      });
+    });
+
+    printReportBtn.addEventListener("click", () => {
+      window.print();
+    });
+
+    loadReportTemplateBtn.addEventListener("click", () => {
+      const curSub = reportSubject.value;
+      if (curSub.includes("열및물질전달")) {
+        reportTitle.value = "원통 및 구 좌표계에서의 1차원 정상상태 전도 및 복합 열전달 저항 해석";
+        reportSec1.value = "원통 다층 파이프 시스템에서 절연 임계 반경(Critical radius of insulation)의 개념을 이해하고, 총괄 열전달 계수(U) 및 열저항 네트워크를 수립하여 전도와 대류가 복합된 상태의 총 열손실량을 정량화함.";
+        reportSec2.value = "1. 열전도 지배방정식:\n   q_r = -k * (2*pi*r*L) * (dT/dr)\n2. 원통 벽 열저항:\n   R_cond = ln(r2/r1) / (2*pi*k*L)\n3. 대류 열저항:\n   R_conv = 1 / (h * 2*pi*r2*L)\n4. 절연 임계 반지름 (rc):\n   r_cr = k_ins / h";
+        reportSec3.value = "[예제 3.2 분석]\n내경 r1=0.05m, 외경 r2=0.06m 강철 파이프에 보온재(k=0.08 W/mK)를 둘렀을 때,\n- r_cr = 0.08 / 10 = 0.008m = 8mm\n- 실제 파이프 외경(60mm)이 임계 반경보다 크므로 보온재 두께를 늘릴수록 열손실이 확실히 감소함 확인.";
+        reportSec4.value = "임계 반경 이론에 따르면 반경이 매우 작은 전선이나 얇은 튜브의 경우 절연체를 덧대면 오히려 표면적 증가 효과(대류 저항 감소)가 전도 저항 증가보다 커져 방열이 촉진될 수 있음을 증명함. 따라서 플랜트 배관 설계 시 반드시 r2 > r_cr 조건을 사전 점검해야 함.";
+        reportSec5.value = "Incropera 열전달 제8판 Chapter 3 (One-Dimensional Steady-State Conduction)";
+      } else if (curSub.includes("촉매") || curSub.includes("바이오")) {
+        reportTitle.value = "고체 불균일 촉매의 Langmuir-Hinshelwood 속도식 유도 및 효소 반응 kinetics 비교";
+        reportSec1.value = "불균일 촉매 반응에서 흡착-표면반응-탈착 3단계 메커니즘을 분석하고, Michaelis-Menten 효소 반응식과의 수학적 유사성 및 차이점을 규명하여 바이오/화학 촉매 공정의 활성화 에너지 저감 효과를 정리함.";
+        reportSec2.value = "1. Langmuir 흡착 등온식: theta = (K*P) / (1 + K*P)\n2. L-H 표면 반응 율속 단계 속도식:\n   -rA = (k * K_A * P_A) / (1 + K_A * P_A + K_B * P_B)\n3. Michaelis-Menten 효소 반응식:\n   v = (Vmax * [S]) / (Km + [S])\n(Km은 효소-기질 친화도의 역수 척도)";
+        reportSec3.value = "[데이터 해석]\n- 저농도/저압 영역: 1차 반응 거동 (v proportional to [S])\n- 고농도/고압 영역: 촉매 표면 포화로 인한 0차 반응 거동 (v = Vmax 수렴)\n- Lineweaver-Burk 역수 플롯(1/v vs 1/[S])을 통한 Km, Vmax 도출 그래프 생성.";
+        reportSec4.value = "생물학적 효소 촉매는 상온/상압 및 중성 pH라는 온화한 조건에서 뛰어난 선택성을 보이지만 기질 저해(Substrate inhibition)와 열 변성에 취약함. 반면 무기 고체 촉매는 고온/고압 내구성이 우수하므로 하이브리드 바이오촉매 공정 설계 시 효소 고정화(Immobilization) 기술이 핵심임을 도출함.";
+        reportSec5.value = "Fogler 반응공학 Chapter 10 & 바이오공정공학 3장 효소 속도론";
+      } else {
+        reportTitle.value = "산염기 다양성자산 평형 및 EDTA 착물 적정 정량 분석";
+        reportSec1.value = "다양성자산의 단계별 해리 평형(Ka1, Ka2)과 pH 완충 용량(Beta)을 계산하고, 금속 이온-EDTA 킬레이트 적정 곡선의 종말점 검출 원리와 조건부 형성 상수(Kf')를 정량 해석함.";
+        reportSec2.value = "1. 전하 균형식 (Charge Balance) & 질량 균형식 (Mass Balance)\n2. 조건부 형성상수: Kf' = alpha_Y4- * Kf\n3. 완충 용량: beta = 2.303 * ( [H+] + [OH-] + (C * Ka * [H+]) / (Ka + [H+])^2 )";
+        reportSec3.value = "0.01M Ca2+ 용액 50mL를 pH 10 완충용액에서 0.01M EDTA로 적정 시:\n- 당량점 전: 과량의 Ca2+ 농도로부터 pCa 산출\n- 당량점: CaY2- 해리 평형으로부터 pCa 도출\n- 당량점 후: 과량의 EDTA 농도로부터 pCa 도출 (전형적인 S자 적정곡선 도출)";
+        reportSec4.value = "pH 완충용액의 농도가 너무 낮으면 적정 중 발생하는 H+로 인해 pH가 변화하여 EDTA의 유효 농도(alpha_Y4-)가 급감하므로 당량점 부근의 전위차가 뭉개지는 현상이 발생함. 정확한 분석을 위해 보조 착화제와 적정 완충 용량 확보가 필수적임.";
+        reportSec5.value = "Skoog 분석화학 강의 제9판 Chapter 12";
+      }
+      renderReportPreview();
+      showToast("과목 맞춤형 표준 레포트 템플릿이 로드되었습니다!", "📋");
+    });
+
+    /* --- Data Backup & Restore (JSON Export / Import) --- */
+    const exportDataBtn = document.getElementById("exportDataBtn");
+    const importFileInput = document.getElementById("importFileInput");
+
+    exportDataBtn.addEventListener("click", () => {
+      const dump = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k.startsWith(STORAGE_PREFIX)) {
+          dump[k] = localStorage.getItem(k);
+        }
+      }
+      const blob = new Blob([JSON.stringify(dump, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `chemstudy_backup_${date}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("모든 학습 데이터가 JSON 백업 파일로 저장되었습니다!", "💾");
+    });
+
+    importFileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          Object.keys(data).forEach(k => {
+            localStorage.setItem(k, data[k]);
+          });
+          showToast("백업 데이터 복원 성공! 페이지를 새로고침합니다.", "🎉");
+          setTimeout(() => location.reload(), 1000);
+        } catch (err) {
+          alert("유효하지 않은 백업 파일입니다: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    /* --- Initial Bootstrap --- */
+    function init() {
+      // 1. Theme
+      const savedTheme = getStorage(KEYS.THEME, "dark");
+      applyTheme(savedTheme);
+
+      // 2. Date
+      updateDateAndHeader();
+
+      // 3. Thoughts
+      renderThoughts();
+
+      // 4. Personal routine & recall
+      loadPersonalRoutine();
+      loadSubjectRecall(selectedRecallSubject);
+      renderRecallHistory();
+
+      // 5. Problems
+      renderSolvedProblems();
+
+      // 6. Report Draft
+      const savedDraft = getStorage(KEYS.REPORT_DRAFT, null);
+      if (savedDraft) {
+        reportSubject.value = savedDraft.sub || "열및물질전달";
+        reportWeek.value = savedDraft.wk || "1주차";
+        reportTitle.value = savedDraft.title || "";
+        reportSec1.value = savedDraft.s1 || "";
+        reportSec2.value = savedDraft.s2 || "";
+        reportSec3.value = savedDraft.s3 || "";
+        reportSec4.value = savedDraft.s4 || "";
+        reportSec5.value = savedDraft.s5 || "";
+      }
+      renderReportPreview();
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
